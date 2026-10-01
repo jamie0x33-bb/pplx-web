@@ -31,9 +31,7 @@ pplx-web status
 
 ## Tracing
 
-The `--trace` flag records all HTTP requests and responses made during the command. Trace files are JSON and can be uploaded to the project's trace viewer for collaborative debugging.
-
-Traces include request headers. In a sandbox environment, this means the connector bearer is captured — upload only to trusted services.
+The `--trace` flag records HTTP requests and responses made during the command. Trace files are JSON and can be uploaded to the project's trace viewer for collaborative debugging.
 
 ## Development
 
