@@ -19,19 +19,10 @@ pplx-web preflight google-drive --json
 
 # Trace HTTP traffic for debugging
 pplx-web preflight gmail --trace
-# → saved to /tmp/pplx-web-trace-<id>.json
-
-# Upload a trace for shared debugging
-pplx-web trace upload /tmp/pplx-web-trace-*.json
-# → returns a trace_id and viewer link
 
 # Show runtime environment
 pplx-web status
 ```
-
-## Tracing
-
-The `--trace` flag records HTTP requests and responses made during the command. Trace files are JSON and can be uploaded to the project's trace viewer for collaborative debugging.
 
 ## Development
 
