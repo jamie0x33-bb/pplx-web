@@ -1,0 +1,19 @@
+[project]
+name = "pplx-web"
+version = "0.2.1"
+description = "Browser automation helpers for Perplexity Computer"
+requires-python = ">=3.10"
+license = "MIT"
+
+[project.optional-dependencies]
+browser = ["playwright>=1.40"]
+
+[project.scripts]
+pplx-web = "pplx_web.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
