@@ -56,4 +56,20 @@ def list_connectors(rt: Runtime, *, recorder: Recorder | None = None) -> list[di
 
 
 def preflight(rt: Runtime, connector: str, *, recorder: Recorder | None = None) -> dict:
-    return _request(rt, f"/connectors/{connector}/status", recorder=recorder)
+    result = _request(rt, f"/connectors/{connector}/status", recorder=recorder)
+    return _normalise_preflight(result)
+
+
+def _normalise_preflight(result: dict) -> dict:
+    """Handle both flat and nested preflight response shapes.
+
+    Older images return ``{"status": "connected", "target_base_url": "..."}``.
+    Newer images (2026.09+) may wrap the fields inside a ``"connector"`` key:
+    ``{"connector": {"status": "connected", "target_base_url": "..."}}``.
+    """
+    if "target_base_url" in result:
+        return result
+    inner = result.get("connector", {})
+    if isinstance(inner, dict) and "target_base_url" in inner:
+        return {**result, **inner}
+    return result

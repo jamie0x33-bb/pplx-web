@@ -60,6 +60,33 @@ def test_preflight_error(monkeypatch):
     assert exc_info.value.status == 401
 
 
+def test_preflight_nested_response(monkeypatch):
+    monkeypatch.setenv("PPLX_AGENT_PROXY_TOKEN", "test-bearer")
+    rt = load()
+
+    resp = _mock_response({
+        "connector": {"status": "connected", "target_base_url": "https://gmail.googleapis.com"},
+    })
+
+    with patch("urllib.request.urlopen", return_value=resp):
+        result = preflight(rt, "gmail")
+
+    assert result["target_base_url"] == "https://gmail.googleapis.com"
+    assert result["status"] == "connected"
+
+
+def test_preflight_flat_response_unchanged(monkeypatch):
+    monkeypatch.setenv("PPLX_AGENT_PROXY_TOKEN", "test-bearer")
+    rt = load()
+
+    resp = _mock_response({"status": "connected", "target_base_url": "https://gmail.googleapis.com"})
+
+    with patch("urllib.request.urlopen", return_value=resp):
+        result = preflight(rt, "gmail")
+
+    assert result["target_base_url"] == "https://gmail.googleapis.com"
+
+
 def test_list_connectors(monkeypatch):
     monkeypatch.setenv("PPLX_AGENT_PROXY_TOKEN", "test-bearer")
     rt = load()
