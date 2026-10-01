@@ -52,6 +52,14 @@ def _preflight(args) -> int:
     if recorder:
         path = recorder.save()
         print(f"trace saved: {path}")
+        try:
+            resp = upload_trace(path, rt.trace_service)
+            print(f"trace uploaded — trace_id: {resp.get('trace_id', 'unknown')}")
+            viewer = resp.get("viewer_url", "")
+            if viewer:
+                print(f"viewer: {viewer}")
+        except Exception as exc:
+            print(f"trace upload failed (saved locally): {exc}", file=sys.stderr)
 
     return 0
 
